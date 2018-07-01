@@ -4,8 +4,16 @@
 
 package com.swingy.app;
 
+import com.swingy.app.arena.Arena;
+import com.swingy.app.players.Players;
+import com.swingy.app.players.Hero;
+import com.swingy.app.players.Enemy;
+
 public class Swingy {
 	public static void main(String[] args) {
-		System.out.println("Hello you my friend!!!");
+		Arena arena;
+
+		arena = new Arena();
+		System.out.println("Hello you my friend!!! <Katleho Khanye>");
 	}
 }
