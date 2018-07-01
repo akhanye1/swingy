@@ -13,7 +13,21 @@ public class Swingy {
 	public static void main(String[] args) {
 		Arena arena;
 
-		arena = new Arena();
-		System.out.println("Hello you my friend!!! <Katleho Khanye>");
+		if (args.length > 0) {
+			if (args[0].equals("graphics")) {
+				System.out.println("Graphics");
+			}
+			else if (args[0].equals("terminal")) {
+				System.out.println("Terminal");
+			}
+			else {
+				System.out.println("Invalid Option");
+				return ;
+			}
+		}
+		else {
+			System.out.println("Defaulting to terminal");
+		}
+		//arena = new Arena();
 	}
 }
