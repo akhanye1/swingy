@@ -8,26 +8,35 @@ import com.swingy.app.arena.Arena;
 import com.swingy.app.players.Players;
 import com.swingy.app.players.Hero;
 import com.swingy.app.players.Enemy;
+import com.swingy.app.players.HeroFactory;
+import com.swingy.app.players.EnemyFactory;
+import com.swingy.app.display.Display;
+import com.swingy.app.display.Console;
+import com.swingy.app.display.Gui;
 
 public class Swingy {
 	public static void main(String[] args) {
-		Arena arena;
+		Arena 			arena;
+		Display			display;
+		HeroFactory		heroFactory;
 
 		if (args.length > 0) {
-			if (args[0].equals("graphics")) {
-				System.out.println("Graphics");
+			if (args[0].equals("gui")) {
+				display = new Console();
 			}
-			else if (args[0].equals("terminal")) {
-				System.out.println("Terminal");
+			else if (args[0].equals("console")) {
+				display = new Gui();
 			}
 			else {
-				System.out.println("Invalid Option");
+				System.out.println("Invalid Option: gui or console");
 				return ;
 			}
 		}
 		else {
-			System.out.println("Defaulting to terminal");
+			System.out.println("Defaulting to console");
+			display = new Console();
 		}
-		//arena = new Arena();
+		heroFactory = new HeroFactory(display);
+		heroFactory.chooseHero();
 	}
 }
