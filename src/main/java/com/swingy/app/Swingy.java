@@ -37,6 +37,9 @@ public class Swingy {
 			display = new Console();
 		}
 		heroFactory = new HeroFactory(display);
-		heroFactory.chooseHero();
+		if (!heroFactory.chooseHero()) {
+			System.out.println("No hero chosen");
+			return ;
+		}
 	}
 }

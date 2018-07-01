@@ -4,7 +4,6 @@
 
 package com.swingy.app.display;
 
-import com.swingy.app.players.Players;
 import com.swingy.app.controller.Controller;
 
 public class Console extends Display {
@@ -21,14 +20,19 @@ public class Console extends Display {
 	public void		updatePositions() {
 	}
 
-	public Players	chooseHero() {
+	public int		chooseHero() {
 		int	option;
+
 		System.out.println("Welcome");
 		System.out.println("=======");
-		if ((option = Controller.getHeroOption()) == 1) {
-		}
-		else if (option == 2) {
-		}
-		return (null);
+		do {
+			System.out.println("1 | Create Hero");
+			System.out.println("2 | Choose Saved Hero");
+			System.out.println("3 | Exit");
+			System.out.print("Choice : ");
+			option = Controller.getHeroOption();
+			System.out.println("");
+		} while (option < 1 || option > 3);
+		return (option);
 	}
 }

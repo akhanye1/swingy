@@ -9,14 +9,20 @@ import java.util.Scanner;
 public class Controller {
 	public static int getHeroOption() {
 		Scanner sc = new Scanner(System.in);
-		int		optionVal;
 		String	temp;
 
-		System.out.println("1 | Create Hero");
-		System.out.println("2 | Choose Saved Hero");
-		System.out.print("Choice : ");
-		temp = sc.nextLine();
-		System.out.println("What you putin : " + temp);
+		if (((temp = sc.nextLine()).equals("1")) || (temp.equals("2")) ||
+				(temp.equals("3"))) {
+			if (temp.equals("1"))
+				return (1);
+			else if (temp.equals("2"))
+				return (2);
+			else
+				return (3);
+		}
+		else {
+			System.out.println("Invalid option : Please try again");
+		}
 		return (0);
 	}
 }

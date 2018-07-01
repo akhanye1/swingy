@@ -27,5 +27,5 @@ public abstract class Display {
 
 	public abstract void		updatePositions();
 
-	public abstract Players		chooseHero();
+	public abstract int			chooseHero();
 }

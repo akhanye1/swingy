@@ -4,8 +4,6 @@
 
 package com.swingy.app.display;
 
-import com.swingy.app.players.Players;
-
 public class Gui extends Display {
 	public Gui() {
 		super("console");
@@ -20,8 +18,8 @@ public class Gui extends Display {
 	public void		updatePositions() {
 	}
 
-	public Players	chooseHero() {
-		return (null);
+	public int		chooseHero() {
+		return (3);
 	}
 
 }

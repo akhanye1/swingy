@@ -17,7 +17,19 @@ public class HeroFactory {
 		this.display = display;
 	}
 
-	public void chooseHero() {
-		this.hero = display.chooseHero();
+	public boolean chooseHero() {
+		int option;
+
+		if ((option = display.chooseHero()) == 3) {
+			return (false);
+		}
+		else if (option == 1) {
+			this.createHero();
+		}
+		return (true);
+	}
+
+	private boolean	createHero() {
+
 	}
 }
