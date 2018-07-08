@@ -25,31 +25,35 @@ public class PlayerViewConsole extends PlayerView implements Display {
 		sc = new Scanner(System.in);
 	}
 
-	private void	setName() {
-		boolean ok = false;
-		String temp;
+	private String	getPlayerClass() {
+		int		tries;
+		String	temp;
+
+		tries = 0;
 		do {
-			ok = false;
-			System.out.print("Hero Name : ");
-			try {
-				temp = sc.nextLine();
-				System.out.println("Storing to player model");
-				this.playerModel.setName(temp);
-				System.out.println("Stored value : " + this.playerModel.getName());
-				ok = true;
-			}
-			/*catch (ValidationException err) {
-				System.out.println("Validation Exception : " + err.getMessage());
-			}*/
-			catch (Exception err) {
-				System.out.println("Validation Exception : " + err.getMessage());
-			}
-		} while (!ok);
+			if (tries > 0)
+				System.out.println("Error encountered");
+			System.out.println("Player Class Type");
+			System.out.println("1 > Knight");
+			System.out.println("2 > Elf");
+			System.out.println("3 > Viking");
+			temp = sc.nextLine();
+		} while (!temp.equals("1") && !temp.equals("2") && !temp.equals("3"));
+		if (temp.equals("1"))
+			return ("Knight");
+		else if (temp.equals("2"))
+			return ("Elf");
+		return ("Viking");
 	}
 
 	public void	createPlayer(PlayerModel playerModel) {
+		String	temp;
+
 		this.playerModel = playerModel;
-		this.setName();
+		System.out.print("Name : ");
+		temp = sc.nextLine();
+		playerModel.setName(temp);
+		this.playerModel.setPClass(getPlayerClass());
 	}
 
 	public int	choosePlayer(PlayerController controller) {
