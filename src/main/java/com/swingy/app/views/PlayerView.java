@@ -4,5 +4,6 @@
 
 package com.swingy.app.views;
 
-public class PlayerView extends Display {
+public interface PlayerView {
+	public int choosePlayer();
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.swingy.app.views.Display;
 
-public class Arena {
+public class ArenaController {
 	private PlayerController		hero;
 	private List<PlayerController>	enemies;
 	private static int				collisionCounter;
@@ -18,7 +18,7 @@ public class Arena {
 	private int						height;
 
 
-	public Arena() {
+	public ArenaController() {
 		enemies = new ArrayList();
 		enemyCount = 0;
 	}

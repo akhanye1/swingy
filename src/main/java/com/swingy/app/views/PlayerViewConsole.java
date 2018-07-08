@@ -6,7 +6,12 @@ package com.swingy.app.views;
 
 import java.util.Scanner;
 
-public class PlayerViewConsole extends PlayerView {
+public class PlayerViewConsole extends Display {
+
+	public PlayerViewConsole() {
+		super("console");
+	}
+
 	public int	choosePlayer() {
 		Scanner sc = new Scanner(System.in);
 		String	temp;
