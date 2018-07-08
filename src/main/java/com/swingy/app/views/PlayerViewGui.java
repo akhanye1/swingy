@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import com.swingy.app.controllers.PlayerController;
+import com.swingy.app.models.PlayerModel;
 
 public class PlayerViewGui extends PlayerView implements Display {
 
@@ -22,6 +23,9 @@ public class PlayerViewGui extends PlayerView implements Display {
 		returnNum = 3;
 		frame = new JFrame("Simple Frame");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void	createPlayer(PlayerModel playerModel) {
 	}
 
 	public int	choosePlayer(PlayerController controller) {

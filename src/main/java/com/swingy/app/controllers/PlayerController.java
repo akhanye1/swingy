@@ -38,7 +38,8 @@ public class PlayerController {
 	}
 
 	public void newPlayer() {
-		System.out.println("New Player to add");
+		PlayerModel playerModel= new PlayerModel();
+		this.playerView.createPlayer(playerModel);
 	}
 
 	public int	choosePlayer() {
