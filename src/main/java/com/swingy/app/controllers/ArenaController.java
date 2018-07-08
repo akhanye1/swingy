@@ -19,7 +19,7 @@ public class ArenaController {
 
 
 	public ArenaController() {
-		enemies = new ArrayList();
+		enemies = new ArrayList<PlayerController>();
 		enemyCount = 0;
 	}
 

@@ -4,6 +4,8 @@
 
 package com.swingy.app.views;
 
-public interface PlayerView {
-	public int choosePlayer();
+import com.swingy.app.controllers.PlayerController;
+
+public abstract class PlayerView {
+	public abstract int choosePlayer(PlayerController controller);
 }

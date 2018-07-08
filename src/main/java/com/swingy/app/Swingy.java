@@ -8,18 +8,21 @@ import com.swingy.app.controllers.PlayerController;
 import com.swingy.app.controllers.ArenaController;
 import com.swingy.app.views.Display;
 import com.swingy.app.views.PlayerViewConsole;
+import com.swingy.app.views.PlayerViewGui;
 import com.swingy.app.views.PlayerView;
 
 public class Swingy {
-	public static void main(String[] args) {
+	
+	public static void		main(String[] args) {
 		PlayerController	playerController;
 		ArenaController		arena;
-		PlayerView			display;
+		Display				display;
+		int					choice;
 
 		display = null;
 		if (args.length > 0) {
 			if (args[0].equals("gui")) {
-				//display = new Console();
+				display = new PlayerViewGui();
 			}
 			else if (args[0].equals("console")) {
 				display = new PlayerViewConsole();
@@ -39,10 +42,5 @@ public class Swingy {
 		}
 		playerController = new PlayerController(display);
 		playerController.choosePlayer();
-		/*heroFactory = new HeroFactory(display);
-		if (!heroFactory.chooseHero()) {
-			System.out.println("No hero chosen");
-			return ;
-		}*/
 	}
 }
