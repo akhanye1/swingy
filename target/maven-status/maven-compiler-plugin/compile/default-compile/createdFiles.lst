@@ -1,10 +1,10 @@
 com/swingy/app/artifacts/Artifacts.class
-com/swingy/app/display/Display.class
 com/swingy/app/arena/Arena.class
+com/swingy/app/display/Display.class
 com/swingy/app/players/EnemyFactory.class
-com/swingy/app/players/Hero.class
-com/swingy/app/players/Enemy.class
 com/swingy/app/display/Console.class
+com/swingy/app/players/Enemy.class
+com/swingy/app/players/Hero.class
 com/swingy/app/Swingy.class
 com/swingy/app/display/Gui.class
 com/swingy/app/controller/Controller.class

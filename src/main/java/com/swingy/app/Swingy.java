@@ -1,5 +1,5 @@
 /*
- * Created by Katleho Khanye (akhanye)
+ * Author by Katleho Khanye (akhanye)
  * */
 
 package com.swingy.app;
@@ -33,7 +33,6 @@ public class Swingy {
 			}
 		}
 		else {
-			System.out.println("Defaulting to console");
 			display = new Console();
 		}
 		heroFactory = new HeroFactory(display);

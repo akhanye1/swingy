@@ -33,7 +33,7 @@ public abstract class Players {
 		this.attack = Attack;
 		this.defence = defence;
 		this.hitPoints = hitPoints;
-		artifacts = new ArrayList();
+		artifacts = new ArrayList<Artifacts>();
 		this.currentArtifact = null;
 		enemies = 0;
 		this.y = 0;

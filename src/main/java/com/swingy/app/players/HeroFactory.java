@@ -26,10 +26,17 @@ public class HeroFactory {
 		else if (option == 1) {
 			this.createHero();
 		}
+		else if (option == 2) {
+			this.selectHero();
+		}
 		return (true);
 	}
 
-	private boolean	createHero() {
+	private boolean selectHero() {
+		return (true);
+	}
 
+	private boolean	createHero() {	
+		return (true);
 	}
 }

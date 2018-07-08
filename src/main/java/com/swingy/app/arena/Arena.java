@@ -22,7 +22,7 @@ public class Arena {
 
 
 	public Arena() {
-		enemies = new ArrayList();
+		enemies = new ArrayList<Players>();
 		enemyCount = 0;
 	}
 
