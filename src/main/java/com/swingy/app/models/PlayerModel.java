@@ -2,13 +2,13 @@
  * Author Katleho Khanye (akhanye)
  * */
 
-package com.swingy.app.players;
+package com.swingy.app.models;
 
 import com.swingy.app.artifacts.Artifacts;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Players {
+public abstract class PlayerModel {
 	private String			name;
 	private String			pClass;
 	private int				level;
@@ -19,11 +19,10 @@ public abstract class Players {
 	private int				hitPoints;
 	private List<Artifacts>	artifacts;
 	private Artifacts		currentArtifact;
-	private static int		enemies;
 	private int				y;
 	private int				x;
 
-	Players(String name, String pclass, int level, int Experience, int Attack,
+	PlayerModel(String name, String pclass, int level, int Experience, int Attack,
 			int defence, int hitPoints) {
 		this.name = name;
 		this.pClass = pclass;
@@ -35,7 +34,6 @@ public abstract class Players {
 		this.hitPoints = hitPoints;
 		artifacts = new ArrayList<Artifacts>();
 		this.currentArtifact = null;
-		enemies = 0;
 		this.y = 0;
 		this.x = 0;
 	}
@@ -50,15 +48,5 @@ public abstract class Players {
 	public int				getHitPoints() { return (this.hitPoints); }
 	public int				getX() { return (this.x); }
 	public int				getY() { return (this.y); }
-
-	public void				getSelectArtifact() {
-	}
-
-	public void				addArtifact() {
-	}
-
-	public void				takeHit() {
-	}
-	
-	public abstract void	movePlayer();
+	public void				addArtifact(Artifacts artifact) { this.artifacts.add(artifact); }
 }	
