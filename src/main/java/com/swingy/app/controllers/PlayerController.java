@@ -10,8 +10,6 @@ import com.swingy.app.views.Display;
 import com.swingy.app.controllers.FileController;
 import com.swingy.app.views.PlayerViewConsole;
 import javax.validation.*;
-import javax.validation.Validator;
-import javax.validation.Validation;
 import javax.validation.constraints.*;
 import javax.validation.executable.*;
 import java.util.Set;
@@ -50,7 +48,7 @@ public class PlayerController {
 	}
 
 	private void runValidator() {
-		System.out.println("Running validation start");
+		/*System.out.println("Running validation start");
 		validatorFactory = Validation.buildDefaultValidatorFactory();
 		validator = validatorFactory.getValidator();
 		Set<ConstraintViolation<PlayerModel>> validationErrors = validator.validate(this.player);
@@ -60,7 +58,7 @@ public class PlayerController {
 				System.out.println(error.getMessageTemplate() + "::" +
 						error.getPropertyPath()+"::"+error.getMessage());
 			}
-		}
+		}*/
 	}
 
 	public void validatePlayer() {

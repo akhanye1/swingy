@@ -5,12 +5,32 @@ import com.swingy.app.models.PlayerModel;
 import com.swingy.app.views.Display;
 import java.util.List;
 import java.util.ArrayList;
+import java.sql.*;
 
 public class FileController {
-	private String fileName;
-	private PlayerModel hero;
+	private 	String fileName;
+	private 	PlayerModel hero;
+	Connection	conn;
 
 	public FileController() {
+		fileName = "jdbc:sqlite:test.db";
+		conn = null;
+		try {
+			/*String driver = "org.sqlite.JDBC";
+			Class.forName(driver);*/
+			conn = DriverManager.getConnection(fileName);
+			if (conn != null) {
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("The driver name is " + meta.getDriverName());
+				System.out.println("A new database has been created");
+			}
+		}
+		catch (SQLException err) {
+			System.out.println("Error connecting to database :: " + err.getMessage());
+		}
+		/*catch (ClassNotFoundException err) {
+			System.out.println("Class not found : " + err.getMessage());
+		}*/
 	}
 
 	public List<PlayerModel> getHeros() {
