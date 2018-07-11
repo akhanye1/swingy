@@ -70,6 +70,7 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			createPlayer(playerModel);
 			return ;
 		}
+		this.playerController.savePlayer();
 	}
 
 	public int	choosePlayer(PlayerController controller) {

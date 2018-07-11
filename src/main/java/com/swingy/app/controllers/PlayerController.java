@@ -47,6 +47,7 @@ public class PlayerController {
 	}
 
 	public void	savePlayer() {
+		fileController.saveHero(this.player);
 	}
 
 	public void	updatePlayer() {
@@ -93,7 +94,6 @@ public class PlayerController {
 	public void newPlayer() {
 		this.player = new PlayerModel();
 		this.playerView.createPlayer(player);
-		//this.validatePlayer();
 	}
 
 	public int	choosePlayer() {

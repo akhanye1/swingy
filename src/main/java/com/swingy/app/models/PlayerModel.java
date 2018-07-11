@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.*;
 import javax.validation.constraints.*;
 
 public class PlayerModel {
+	private int				rec;
 	@NotNull(message="Hero name cannot be blank")
 	@Length(max=30, min=5, message="Minimum length of champ = 5 Max 30")
 	private String			name;
@@ -59,6 +60,7 @@ public class PlayerModel {
 		this.x = 0;
 	}
 
+	public int				getRec() { return (this.rec); }
 	public String			getName() { return (this.name); }
 	public String			getPClass() { return (this.pClass); }
 	public int				getLevel() { return (this.level); }
@@ -76,4 +78,5 @@ public class PlayerModel {
 	public void				setAttack(int attack) { this.attack = attack; }
 	public void				setDefence(int defence) { this.defence = defence; }
 	public void				setHitPoints(int hitPoints) { this.hitPoints = hitPoints; }
+	public void				setRec(int rec) { this.rec = rec; }
 }	

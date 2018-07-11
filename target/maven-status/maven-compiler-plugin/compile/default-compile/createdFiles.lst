@@ -1,5 +1,5 @@
-com/swingy/app/models/PlayerModel.class
 com/swingy/app/views/PlayerViewGui.class
+com/swingy/app/models/PlayerModel.class
 com/swingy/app/views/PlayerViewGui$1.class
 com/swingy/app/controllers/FileController.class
 com/swingy/app/views/PlayerViewConsole.class
