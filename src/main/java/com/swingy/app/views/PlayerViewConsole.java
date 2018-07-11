@@ -52,7 +52,12 @@ public class PlayerViewConsole extends PlayerView implements Display {
 		this.playerModel = playerModel;
 		System.out.print("Name : ");
 		temp = sc.nextLine();
-		playerModel.setName(temp);
+		try {
+			playerModel.setName(temp);
+		}
+		catch (Exception err) {
+			System.out.println("Validator Exception : " + err.getMessage());
+		}
 		this.playerModel.setPClass(getPlayerClass());
 	}
 

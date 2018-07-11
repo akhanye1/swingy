@@ -6,6 +6,7 @@ package com.swingy.app;
 
 import com.swingy.app.controllers.PlayerController;
 import com.swingy.app.controllers.ArenaController;
+import com.swingy.app.controllers.FileController;
 import com.swingy.app.views.Display;
 import com.swingy.app.views.PlayerViewConsole;
 import com.swingy.app.views.PlayerViewGui;
@@ -18,7 +19,9 @@ public class Swingy {
 		ArenaController		arena;
 		Display				display;
 		int					choice;
+		FileController		fileController;
 
+		fileController = new FileController();
 		display = null;
 		if (args.length > 0) {
 			if (args[0].equals("gui")) {
