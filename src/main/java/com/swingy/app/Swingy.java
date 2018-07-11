@@ -21,6 +21,7 @@ public class Swingy {
 		int					choice;
 		FileController		fileController;
 
+		fileController = new FileController();
 		display = null;
 		fileController = new FileController();
 		if (args.length > 0) {

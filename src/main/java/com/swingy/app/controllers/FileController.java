@@ -16,8 +16,8 @@ public class FileController {
 		fileName = "jdbc:sqlite:test.db";
 		conn = null;
 		try {
-			/*String driver = "org.sqlite.JDBC";
-			Class.forName(driver);*/
+			String driver = "org.sqlite.JDBC";
+			Class.forName(driver);
 			conn = DriverManager.getConnection(fileName);
 			if (conn != null) {
 				DatabaseMetaData meta = conn.getMetaData();
@@ -28,9 +28,9 @@ public class FileController {
 		catch (SQLException err) {
 			System.out.println("Error connecting to database :: " + err.getMessage());
 		}
-		/*catch (ClassNotFoundException err) {
+		catch (ClassNotFoundException err) {
 			System.out.println("Class not found : " + err.getMessage());
-		}*/
+		}
 	}
 
 	public List<PlayerModel> getHeros() {
