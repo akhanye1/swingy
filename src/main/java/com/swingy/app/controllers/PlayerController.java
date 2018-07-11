@@ -5,6 +5,7 @@
 package com.swingy.app.controllers;
 
 import com.swingy.app.models.PlayerModel;
+import com.swingy.app.models.ValidationErrorModel;
 import com.swingy.app.views.PlayerView;
 import com.swingy.app.views.Display;
 import com.swingy.app.controllers.FileController;
@@ -17,16 +18,20 @@ import java.lang.reflect.Method;
 import javax.*;
 import org.hibernate.validator.*;
 import org.hibernate.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PlayerController {
-	private PlayerModel player;
-	private FileController fileController;
-	private PlayerView playerView;
-	private ValidatorFactory validatorFactory;
-	private Validator validator;
+	private PlayerModel 		player;
+	private FileController 		fileController;
+	private PlayerView 			playerView;
+	private final Validator 			validator;
 
 	public PlayerController(Display display) {
+		fileController = new FileController();
 		playerView = (PlayerView)display;
+		final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
 	}
 
 	public void	takeHit() { 
@@ -47,26 +52,27 @@ public class PlayerController {
 	public void	updatePlayer() {
 	}
 
-	private void runValidator() {
-		/*System.out.println("Running validation start");
-		validatorFactory = Validation.buildDefaultValidatorFactory();
-		validator = validatorFactory.getValidator();
-		Set<ConstraintViolation<PlayerModel>> validationErrors = validator.validate(this.player);
-		System.out.println("Running validation");
+	private boolean runValidator(List<ValidationErrorModel> errors) {
+		boolean ok;
+
+		ok = true;
+		Set<ConstraintViolation<PlayerModel>> validationErrors = validator.validate(player);
 		if (!validationErrors.isEmpty()) {
+			ok = false;
 			for (ConstraintViolation<PlayerModel> error : validationErrors) {
-				System.out.println(error.getMessageTemplate() + "::" +
-						error.getPropertyPath()+"::"+error.getMessage());
+				ValidationErrorModel tempModel = new ValidationErrorModel(error.getPropertyPath().toString(), error.getMessage());
+				errors.add(tempModel);
 			}
-		}*/
+		}
+		return (ok);
 	}
 
-	public void validatePlayer() {
+	public boolean validatePlayer(List<ValidationErrorModel> errors) {
 		this.player.setLevel(0);
 		this.player.setHitPoints(100);
 		switch (this.player.getPClass()) {
 			case "Knight":
-				this.player.setExperience(150);
+				this.player.setExperience(250);
 				this.player.setAttack(15);
 				this.player.setDefence(10);
 				break ;
@@ -81,13 +87,13 @@ public class PlayerController {
 				this.player.setDefence(25);
 				break ;
 		}
-		this.runValidator();
+		return (this.runValidator(errors));
 	}
 
 	public void newPlayer() {
 		this.player = new PlayerModel();
 		this.playerView.createPlayer(player);
-		this.validatePlayer();
+		//this.validatePlayer();
 	}
 
 	public int	choosePlayer() {

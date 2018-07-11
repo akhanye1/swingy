@@ -7,7 +7,10 @@ package com.swingy.app.views;
 import java.util.Scanner;
 import com.swingy.app.controllers.PlayerController;
 import com.swingy.app.models.PlayerModel;
+import com.swingy.app.models.ValidationErrorModel;
 import javax.validation.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PlayerViewConsole extends PlayerView implements Display {
 
@@ -37,6 +40,7 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			System.out.println("1 > Knight");
 			System.out.println("2 > Elf");
 			System.out.println("3 > Viking");
+			System.out.print("Choice : ");
 			temp = sc.nextLine();
 		} while (!temp.equals("1") && !temp.equals("2") && !temp.equals("3"));
 		if (temp.equals("1"))
@@ -47,35 +51,45 @@ public class PlayerViewConsole extends PlayerView implements Display {
 	}
 
 	public void	createPlayer(PlayerModel playerModel) {
-		String	temp;
+		String						temp;
+		List<ValidationErrorModel>	errors;
 
 		this.playerModel = playerModel;
-		System.out.print("Name : ");
+		System.out.print("Hero Name : ");
 		temp = sc.nextLine();
-		try {
-			playerModel.setName(temp);
-		}
-		catch (Exception err) {
-			System.out.println("Validator Exception : " + err.getMessage());
-		}
+		playerModel.setName(temp);
 		this.playerModel.setPClass(getPlayerClass());
+		errors = new ArrayList<ValidationErrorModel>();
+		if (!this.playerController.validatePlayer(errors)) {
+			System.out.println("\nERRORS:");
+			for (ValidationErrorModel validate : errors) {
+				System.out.println(validate.getField() + " : " +
+						validate.getErrorMessage());
+			}
+			System.out.println("Please try again\nEnter new Player: ");
+			createPlayer(playerModel);
+			return ;
+		}
 	}
 
 	public int	choosePlayer(PlayerController controller) {
 		String	temp;
+		boolean	withinRange;
 
 		this.playerController = controller;
 		System.out.println("WELCOME");
 		System.out.println("=======");
 		do {
+			withinRange = false;
 			System.out.println("1 > Create player");
 			System.out.println("2 > Choose save player");
 			System.out.println("3 > Exit");
 			System.out.print("Choice : ");
 			temp = sc.nextLine();
-			if (!temp.equals("1") && !temp.equals("2") && !temp.equals("3"))
+			withinRange = (temp.equals("1") || temp.equals("2") || temp.equals("3"));
+			if (!withinRange)
 				System.out.println("\nInvalid choice, choose between 1 - 3");
-		} while (!temp.equals("1") && !temp.equals("2") && !temp.equals("3"));
+		} while (!withinRange);
 		return (Integer.parseInt(temp));
 	}
 

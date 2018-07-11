@@ -1,3 +1,6 @@
+/*
+ * Author Katleho Khanye (akhanye)
+ * */
 
 package com.swingy.app.controllers;
 
@@ -8,12 +11,12 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class FileController {
-	private 	String fileName;
-	private 	PlayerModel hero;
-	Connection	conn;
+	private String 		fileName;
+	private PlayerModel	hero;
+	Connection			conn;
 
 	public FileController() {
-		fileName = "jdbc:sqlite:test.db";
+		fileName = "jdbc:sqlite:swingy.db";
 		conn = null;
 		try {
 			String driver = "org.sqlite.JDBC";
@@ -21,8 +24,6 @@ public class FileController {
 			conn = DriverManager.getConnection(fileName);
 			if (conn != null) {
 				DatabaseMetaData meta = conn.getMetaData();
-				System.out.println("The driver name is " + meta.getDriverName());
-				System.out.println("A new database has been created");
 			}
 		}
 		catch (SQLException err) {
