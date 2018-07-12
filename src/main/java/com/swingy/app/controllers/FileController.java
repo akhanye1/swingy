@@ -13,7 +13,6 @@ import java.sql.*;
 public class FileController {
 	private String 		fileName;
 	private PlayerModel	hero;
-	Connection			conn;
 	Statement			statement;
 	PreparedStatement	pStatement;
 
@@ -22,8 +21,8 @@ public class FileController {
 
 		initString = "CREATE TABLE IF NOT EXISTS hero " +
 			"(rec INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			"name Varchar, " +
-			"pClass Varchar, " +
+			"name Varchar(30), " +
+			"pClass Varchar(30), " +
 			"level int, " +
 			"experience int, " +
 			"attack int, " +
@@ -42,17 +41,27 @@ public class FileController {
 			")";
 	}*/
 
+	private Connection	getConnection() {
+		try {
+			return (DriverManager.getConnection(fileName));
+		}
+		catch (SQLException err) {
+			return (null);
+		}
+	}
+
 	public FileController() {
 		fileName = "jdbc:sqlite:swingy.db";
-		conn = null;
+		Connection conn = null;
 		try {
 			String driver = "org.sqlite.JDBC";
 			Class.forName(driver);
-			conn = DriverManager.getConnection(fileName);
+			conn = getConnection();
 			if (conn != null) {
 				statement = conn.createStatement();
 				statement.execute(createPlayerTable());
 				DatabaseMetaData meta = conn.getMetaData();
+				this.getHeros();
 			}
 		}
 		catch (SQLException err) {
@@ -68,16 +77,25 @@ public class FileController {
 
 		readString = "SELECT "+
 			"name, " +
-			"pClass, " + 
-			"level, " + 
-			"experience, " +
-			"attack, " +
-			"defence" +
-			"hitPoints" +
-			"FROM hero;"
+			"pClass " +
+			"from hero;";
+		return (readString);
 	}
 
 	public List<PlayerModel> getHeros() {
+		Connection conn;
+		try {
+			conn = this.getConnection();
+			statement = conn.createStatement();
+			ResultSet	rs = statement.executeQuery(getString());
+			while (rs.next()) {
+				System.out.print("Hero : " + rs.getString("name") + " - ");
+				System.out.println(rs.getString("pClass"));
+			}
+		}
+		catch (SQLException err) {
+			System.out.println("Error reading data : " + err.getMessage());
+		}
 		return (null);
 	}
 
@@ -98,8 +116,10 @@ public class FileController {
 
 	public boolean saveHero(PlayerModel hero) {
 		this.hero = hero;
+		Connection conn;
 
 		try {
+			conn = getConnection();
 			pStatement = conn.prepareStatement(saveString());
 			pStatement.setString(1, this.hero.getName());
 			pStatement.setString(2, this.hero.getPClass());
