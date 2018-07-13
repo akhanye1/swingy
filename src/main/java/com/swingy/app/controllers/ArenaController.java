@@ -7,6 +7,7 @@ package com.swingy.app.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import com.swingy.app.views.Display;
+import com.swingy.app.models.PlayerModel;
 
 public class ArenaController {
 	private PlayerController		hero;
@@ -18,7 +19,8 @@ public class ArenaController {
 	private int						height;
 
 
-	public ArenaController() {
+	public ArenaController(PlayerController controller) {
+		hero = controller;
 		enemies = new ArrayList<PlayerController>();
 		enemyCount = 0;
 	}
@@ -31,6 +33,12 @@ public class ArenaController {
 
 	public void				registerHero(PlayerController hero) {
 		this.hero = hero;
+	}
+
+	public void				initPlay() {
+		while (true) {
+			System.out.println("Name : " + this.hero.getPlayer().getName());
+		}
 	}
 
 	public void				registerEnemy(PlayerController enemy) {

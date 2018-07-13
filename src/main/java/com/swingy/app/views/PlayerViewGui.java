@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import com.swingy.app.controllers.PlayerController;
 import com.swingy.app.models.PlayerModel;
+import java.util.List;
 
 public class PlayerViewGui extends PlayerView implements Display {
 
@@ -26,6 +27,12 @@ public class PlayerViewGui extends PlayerView implements Display {
 	}
 
 	public void	createPlayer(PlayerModel playerModel) {
+		frame = new JFrame("New Player");
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	public int	choosePlayer(PlayerController controller) {
@@ -57,6 +64,8 @@ public class PlayerViewGui extends PlayerView implements Display {
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
 				case "Create Player":
+					frame.setVisible(false);
+					frame.dispose();
 					playerController.newPlayer();
 					break ;
 				case "Select Player":
@@ -64,10 +73,12 @@ public class PlayerViewGui extends PlayerView implements Display {
 				case "Exit":
 					break ;
 			}
-			frame.setVisible(false);
-			frame.dispose();
 		}
 	}
 
 	public void refresh() {}
+
+	public void	selectPlayer(List<PlayerModel> players) {
+
+	}
 }

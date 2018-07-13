@@ -96,4 +96,68 @@ public class PlayerViewConsole extends PlayerView implements Display {
 
 	public void refresh() {
 	}
+
+	private void	printHeadings() {
+		System.out.format("%-5s", "Rec");
+		System.out.format("%-20s", "Name");
+		System.out.format("%-20s", "Class");
+		System.out.format("%-5s", "lvl");
+		System.out.format("%-5s", "exp");
+		System.out.format("%-5s", "Atck");
+		System.out.format("%-5s", "Df");
+		System.out.format("%-5s", "Hp");
+		System.out.println();
+		System.out.format("%-5s", "===");
+		System.out.format("%-20s", "====");
+		System.out.format("%-20s", "=====");
+		System.out.format("%-5s", "===");
+		System.out.format("%-5s", "===");
+		System.out.format("%-5s", "====");
+		System.out.format("%-5s", "==");
+		System.out.format("%-5s", "==");
+		System.out.println();
+	}
+
+	public void	selectPlayer(List<PlayerModel> players) {
+		boolean validInput;
+		int		choice;
+		int		maxNum;
+		int		index;
+
+		if (players.size() == 0) {
+			System.out.println("Database is empty");
+			return ;
+		}
+		do {
+			choice = -1;
+			maxNum = 0;
+			index = 1;
+			System.out.println("\nCHOOSE PLAYER");
+			System.out.println("===============");
+			printHeadings();
+			validInput = false;
+			for (PlayerModel tempPlayer : players) {
+				maxNum = tempPlayer.getRec();
+				System.out.format("%-5d", index++);
+				System.out.format("%-20s", tempPlayer.getName());
+				System.out.format("%-20s", tempPlayer.getPClass());
+				System.out.format("%-5d", tempPlayer.getLevel());
+				System.out.format("%-5d", tempPlayer.getExperience());
+				System.out.format("%-5d", tempPlayer.getAttack());
+				System.out.format("%-5d", tempPlayer.getDefence());
+				System.out.format("%-5d", tempPlayer.getHitPoints());
+				System.out.println();
+			}
+			System.out.println("0 (EXIT)");
+			System.out.print("Choice : ");
+			if (sc.hasNextInt())
+				choice = sc.nextInt();
+			validInput = (choice >= 0 && choice <= maxNum);
+			if (!validInput)
+				System.out.println("Invalid option, please try again");
+		} while (!validInput);
+		if (choice > 0) {
+			playerController.setPlayer(players.get(choice - 1));
+		}
+	}
 }

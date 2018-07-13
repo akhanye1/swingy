@@ -61,7 +61,6 @@ public class FileController {
 				statement = conn.createStatement();
 				statement.execute(createPlayerTable());
 				DatabaseMetaData meta = conn.getMetaData();
-				this.getHeros();
 			}
 		}
 		catch (SQLException err) {
@@ -76,27 +75,48 @@ public class FileController {
 		String readString;
 
 		readString = "SELECT "+
+			"rec, " +
 			"name, " +
-			"pClass " +
+			"pClass, " +
+			"level, " +
+			"experience, " +
+			"attack, " +
+			"defence, " +
+			"hitPoints " +
 			"from hero;";
 		return (readString);
 	}
 
+	public PlayerModel		getPlayer(int rec) {
+		return (null);
+	}
+
 	public List<PlayerModel> getHeros() {
-		Connection conn;
+		Connection 			conn;
+		List<PlayerModel>	players;
 		try {
 			conn = this.getConnection();
 			statement = conn.createStatement();
 			ResultSet	rs = statement.executeQuery(getString());
+			players = new ArrayList<PlayerModel>();
 			while (rs.next()) {
-				System.out.print("Hero : " + rs.getString("name") + " - ");
-				System.out.println(rs.getString("pClass"));
+				PlayerModel tempModel = new PlayerModel();
+				tempModel.setRec(rs.getInt("rec"));
+				tempModel.setName(rs.getString("name"));
+				tempModel.setPClass(rs.getString("pClass"));
+				tempModel.setLevel(rs.getInt("level"));
+				tempModel.setExperience(rs.getInt("experience"));
+				tempModel.setAttack(rs.getInt("attack"));
+				tempModel.setDefence(rs.getInt("defence"));
+				tempModel.setHitPoints(rs.getInt("hitPoints"));
+				players.add(tempModel);
 			}
 		}
 		catch (SQLException err) {
 			System.out.println("Error reading data : " + err.getMessage());
+			return (null);
 		}
-		return (null);
+		return (players);
 	}
 
 	private String saveString() {
@@ -130,7 +150,7 @@ public class FileController {
 			pStatement.executeUpdate();
 		}
 		catch (SQLException err) {
-			System.out.println("Error creating hero : " + err.getMessage());
+			return (false);
 		}
 		return (true);
 	}

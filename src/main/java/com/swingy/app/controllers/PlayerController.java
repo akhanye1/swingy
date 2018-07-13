@@ -26,6 +26,7 @@ public class PlayerController {
 	private FileController 		fileController;
 	private PlayerView 			playerView;
 	private final Validator 			validator;
+	private ArenaController		controller;
 
 	public PlayerController(Display display) {
 		fileController = new FileController();
@@ -47,7 +48,16 @@ public class PlayerController {
 	}
 
 	public void	savePlayer() {
-		fileController.saveHero(this.player);
+		int	last;
+		if (fileController.saveHero(this.player)) {
+			//System.out.println(this.player.getName() + " saved");
+			List<PlayerModel> localPlayers = fileController.getHeros();
+			last = localPlayers.size();
+			this.setPlayer(localPlayers.get(last - 1));
+		}
+		else {
+			System.out.println("Error saving player :: " + this.player.getName());
+		}
 	}
 
 	public void	updatePlayer() {
@@ -96,6 +106,17 @@ public class PlayerController {
 		this.playerView.createPlayer(player);
 	}
 
+	public void setPlayer(PlayerModel playerModel) {
+		this.player = playerModel;
+		this.controller = new ArenaController(this);
+		this.controller.initPlay();
+	}
+
+	public void	selectPlayer() {
+		List<PlayerModel> players = fileController.getHeros();
+		this.playerView.selectPlayer(players);
+	}
+
 	public int	choosePlayer() {
 		int choice;
 
@@ -103,10 +124,15 @@ public class PlayerController {
 			this.newPlayer();
 		}
 		else if (choice == 2) {
+			this.selectPlayer();
 		}
 		else if (playerView instanceof PlayerViewConsole) {
 			System.out.println("Goodbye");
 		}
 		return (3);
+	}
+
+	public PlayerModel	getPlayer() {
+		return (this.player);
 	}
 }
