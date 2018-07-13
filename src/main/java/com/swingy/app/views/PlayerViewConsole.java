@@ -83,7 +83,7 @@ public class PlayerViewConsole extends PlayerView implements Display {
 		do {
 			withinRange = false;
 			System.out.println("1 > Create player");
-			System.out.println("2 > Choose save player");
+			System.out.println("2 > Choose saved player");
 			System.out.println("3 > Exit");
 			System.out.print("Choice : ");
 			temp = sc.nextLine();
