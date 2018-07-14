@@ -25,12 +25,14 @@ public class PlayerController {
 	private PlayerModel 		player;
 	private FileController 		fileController;
 	private PlayerView 			playerView;
-	private final Validator 			validator;
+	private final Validator 	validator;
 	private ArenaController		controller;
+	private Display				mainDisplay;
 
 	public PlayerController(Display display) {
 		fileController = new FileController();
 		playerView = (PlayerView)display;
+		this.mainDisplay = display;
 		final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 		validator = validatorFactory.getValidator();
 	}
@@ -47,17 +49,15 @@ public class PlayerController {
 	public void selectArtifact() {
 	}
 
-	public void	savePlayer() {
+	public PlayerModel	getLastPlayer() {
 		int	last;
-		if (fileController.saveHero(this.player)) {
-			//System.out.println(this.player.getName() + " saved");
-			List<PlayerModel> localPlayers = fileController.getHeros();
-			last = localPlayers.size();
-			this.setPlayer(localPlayers.get(last - 1));
-		}
-		else {
-			System.out.println("Error saving player :: " + this.player.getName());
-		}
+
+		List<PlayerModel> localPlayers = fileController.getHeros();
+		return (localPlayers.get(localPlayers.size()  - 1));
+	}
+
+	public boolean	savePlayer() {
+		return (fileController.saveHero(this.player));
 	}
 
 	public void	updatePlayer() {
@@ -108,7 +108,7 @@ public class PlayerController {
 
 	public void setPlayer(PlayerModel playerModel) {
 		this.player = playerModel;
-		this.controller = new ArenaController(this);
+		this.controller = new ArenaController(this, this.mainDisplay);
 		this.controller.initPlay();
 	}
 

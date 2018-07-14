@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.swingy.app.views.Display;
 import com.swingy.app.models.PlayerModel;
+import com.swingy.app.views.PlayerViewConsole;
+import com.swingy.app.views.PlayerViewGui;
 
 public class ArenaController {
 	private PlayerController		hero;
@@ -18,10 +20,15 @@ public class ArenaController {
 	private int						width;
 	private int						height;
 
-
-	public ArenaController(PlayerController controller) {
+	public ArenaController(PlayerController controller, Display pDisplay) {
 		hero = controller;
 		enemies = new ArrayList<PlayerController>();
+		if (pDisplay instanceof PlayerViewConsole) {
+			System.out.println("Console Arena");
+		}
+		else {
+			System.out.println("Gui Arena");
+		}
 		enemyCount = 0;
 	}
 
@@ -36,9 +43,10 @@ public class ArenaController {
 	}
 
 	public void				initPlay() {
-		while (true) {
+		System.out.println("Started<>");
+		/*while (true) {
 			System.out.println("Name : " + this.hero.getPlayer().getName());
-		}
+		}*/
 	}
 
 	public void				registerEnemy(PlayerController enemy) {

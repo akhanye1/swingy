@@ -70,7 +70,15 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			createPlayer(playerModel);
 			return ;
 		}
-		this.playerController.savePlayer();
+		if (this.playerController.savePlayer()) {
+			System.out.println("Hero Saved");
+			this.playerModel = this.playerController.getLastPlayer();
+			this.playerController.setPlayer(this.playerModel);
+			return ;
+		}
+		System.out.println("Error saving hero");
+		createPlayer(this.playerModel);
+		return ;
 	}
 
 	public int	choosePlayer(PlayerController controller) {
@@ -150,8 +158,7 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			}
 			System.out.println("0 (EXIT)");
 			System.out.print("Choice : ");
-			if (sc.hasNextInt())
-				choice = sc.nextInt();
+			choice = sc.nextInt();
 			validInput = (choice >= 0 && choice <= maxNum);
 			if (!validInput)
 				System.out.println("Invalid option, please try again");
