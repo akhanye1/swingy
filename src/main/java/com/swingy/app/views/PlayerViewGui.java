@@ -53,7 +53,7 @@ public class PlayerViewGui extends PlayerView implements Display {
 		nameLabel.setBounds(10, 50, 200, 30);
 		nameTxt.setBounds(200, 50, 200, 30);
 		classLabel.setBounds(10, 90, 200, 30);
-		saveBtn.setBounds(225, 240, 100, 30);
+		saveBtn.setBounds(225, 230, 100, 30);
 		classType.setBounds(200, 90, 200, 30);
 		errorsLabel.setBounds(10, 130, 400, 90);
 		frame.add(nameLabel);
