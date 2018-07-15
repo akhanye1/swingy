@@ -79,7 +79,7 @@ public class PlayerController {
 	}
 
 	public boolean validatePlayer(List<ValidationErrorModel> errors) {
-		this.player.setLevel(0);
+		this.player.setLevel(1);
 		this.player.setHitPoints(100);
 		switch (this.player.getPClass()) {
 			case "Knight":

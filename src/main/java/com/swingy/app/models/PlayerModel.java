@@ -45,6 +45,11 @@ public class PlayerModel {
 	public PlayerModel() {
 	}
 
+	public playerModel(String name, String pClass) {
+		this.name = name;
+		this.pClass = pClass;
+	}
+
 	public PlayerModel(String name, String pclass, int level, int Experience, int Attack,
 			int defence, int hitPoints) {
 		this.name = name;
@@ -79,4 +84,6 @@ public class PlayerModel {
 	public void				setDefence(int defence) { this.defence = defence; }
 	public void				setHitPoints(int hitPoints) { this.hitPoints = hitPoints; }
 	public void				setRec(int rec) { this.rec = rec; }
+	public void				setX(int x) { this.x = x; }
+	public void				setY(int y) { this.y = y; }
 }	

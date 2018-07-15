@@ -105,6 +105,9 @@ public class PlayerViewGui extends PlayerView implements Display {
 					playerController.newPlayer();
 					break ;
 				case "Select Player":
+					frame.setVisible(false);
+					frame.dispose();
+					playerController.selectPlayer();
 					break ;
 				case "Exit":
 					frame.setVisible(false);
@@ -155,6 +158,10 @@ public class PlayerViewGui extends PlayerView implements Display {
 	public void refresh() {}
 
 	public void	selectPlayer(List<PlayerModel> players) {
+		PlayersTableGui	tableView = new PlayersTableGui(players, this);
+	}
 
+	public void setPlayer(PlayerModel playerModel) {
+		playerController.setPlayer(playerModel);
 	}
 }

@@ -143,10 +143,11 @@ public class FileController {
 			pStatement = conn.prepareStatement(saveString());
 			pStatement.setString(1, this.hero.getName());
 			pStatement.setString(2, this.hero.getPClass());
-			pStatement.setInt(3, this.hero.getExperience());
-			pStatement.setInt(4, this.hero.getAttack());
-			pStatement.setInt(5, this.hero.getDefence());
-			pStatement.setInt(6, this.hero.getHitPoints());
+			pStatement.setInt(3, this.hero.getLevel());
+			pStatement.setInt(4, this.hero.getExperience());
+			pStatement.setInt(5, this.hero.getAttack());
+			pStatement.setInt(6, this.hero.getDefence());
+			pStatement.setInt(7, this.hero.getHitPoints());
 			pStatement.executeUpdate();
 		}
 		catch (SQLException err) {
