@@ -134,6 +134,33 @@ public class FileController {
 		return (saveStr);
 	}
 
+	public boolean	updateHero(PlayerModel saveHero) {
+		String		updateString;
+		Connection	conn;
+
+		updateString = "UPDATE hero set "+
+			"level = ?, " +
+			"experience = ?, " +
+			"attack = ?, " +
+			"defence = ? " +
+			"where rec = ?";
+		try {
+			conn = getConnection();
+			pStatement = conn.prepareStatement(updateString);
+			pStatement.setInt(1, saveHero.getLevel());
+			pStatement.setInt(2, saveHero.getExperience());
+			pStatement.setInt(3, saveHero.getAttack());
+			pStatement.setInt(4, saveHero.getDefence());
+			pStatement.setInt(5, saveHero.getRec());
+			pStatement.executeUpdate();
+		}
+		catch (SQLException err) {
+			return (false);
+		}
+		return (true);
+
+	}
+
 	public boolean saveHero(PlayerModel hero) {
 		this.hero = hero;
 		Connection conn;
@@ -156,7 +183,7 @@ public class FileController {
 		return (true);
 	}
 
-	public boolean updateHero(PlayerModel hero) {
+	/*public boolean updateHero(PlayerModel hero) {
 		return (true);
-	}
+	}*/
 }

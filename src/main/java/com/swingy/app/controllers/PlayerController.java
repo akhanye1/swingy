@@ -22,6 +22,7 @@ import org.hibernate.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.lang.*;
 
 public class PlayerController {
 	private PlayerModel 		player;
@@ -45,6 +46,7 @@ public class PlayerController {
 	public PlayerController(PlayerModel player1, PlayerModel player2,
 			ArenaView arenaView, ArenaController arenaController) {
 		Random rand = new Random();
+		fileController = new FileController();
 
 		if (rand.nextInt(2) == 0) {
 			p1 = player1;
@@ -95,13 +97,18 @@ public class PlayerController {
 		int totalExperience;
 		int totalAttack;
 		int totalDefence;
+		int	nextLevel;
 
 		totalExperience = enemyDefeated.getExperience() * 2;
-		totalAttack = enemyDefeated.getAttack();
-		totalDefence = enemyDefeated.getDefence();
+		totalAttack = enemyDefeated.getAttack() / 2;
 		playerWon.setExperience(playerWon.getExperience() + totalExperience);
 		playerWon.setAttack(playerWon.getAttack() + totalAttack);
-		playerWon.setDefence(playerWon.getDefence() + totalDefence);
+		nextLevel = ((playerWon.getLevel() + 1) * 1000);
+	 	nextLevel += (Math.pow((double)playerWon.getLevel(), 2.0) * 450);
+		if (playerWon.getExperience() >= nextLevel) {
+			playerWon.setLevel(playerWon.getLevel() + 1);
+		}
+		fileController.updateHero(playerWon);
 	}
 
 	public void	takeHit(PlayerModel tempPlayer, int attackValue) {

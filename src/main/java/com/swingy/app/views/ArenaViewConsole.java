@@ -5,21 +5,43 @@
 package com.swingy.app.views;
 
 import	com.swingy.app.controllers.ArenaController;
+import	com.swingy.app.models.PlayerModel;
 import	java.util.Scanner;
 
 public class ArenaViewConsole extends ArenaView implements Display {
 	private char			map[][];
 	private ArenaController	arenaController;
+	private PlayerModel		playerModel;
+
+	private int		getNumber() {
+		String	sChoice;
+		int		choice;
+		Scanner	sc = new Scanner(System.in);
+
+		try {
+			sChoice = sc.nextLine();
+			choice = Integer.parseInt(sChoice);
+			return (choice);
+		}
+		catch (Exception err) {
+			System.out.println("Invalid choice");
+			return (getNumber());
+		}
+	}
 
 	private void	setMapVisible() {
 		int		height;
 		int		width;
 		int		choice;
+		String	sChoice;
 		boolean	keyOkay;
 		Scanner sc;
 
 		height = this.map.length;
 		width = this.map[0].length;
+		System.out.print("Hero : " + this.playerModel.getName());
+		System.out.print(" Health : " + this.playerModel.getHitPoints());
+		System.out.println(" Exp : " + this.playerModel.getExperience());
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				System.out.print(map[y][x]);
@@ -39,7 +61,7 @@ public class ArenaViewConsole extends ArenaView implements Display {
 			System.out.println("========");
 			System.out.println("0 > EXIT");
 			System.out.print("Choice : ");
-			choice = sc.nextInt();
+			choice = this.getNumber();
 			keyOkay = ((choice >= 0 && choice <= 4) ||
 					(choice == 10));
 		} while (!keyOkay);
@@ -52,8 +74,9 @@ public class ArenaViewConsole extends ArenaView implements Display {
 		this.setMapVisible();
 	}
 
-	public void showMap(char map[][], ArenaController arenaController) {
+	public void showMap(char map[][], ArenaController arenaController, PlayerModel playerModel) {
 		this.map = map;
+		this.playerModel = playerModel;
 		this.arenaController = arenaController;
 		System.out.print("\033[H\033[2J");
 		this.setMapVisible();

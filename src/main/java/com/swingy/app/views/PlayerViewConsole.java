@@ -126,6 +126,23 @@ public class PlayerViewConsole extends PlayerView implements Display {
 		System.out.println();
 	}
 
+	private int		getNumber() {
+		String	sChoice;
+		int		choice;
+		Scanner	sc = new Scanner(System.in);
+
+		try {
+			sChoice = sc.nextLine();
+			choice = Integer.parseInt(sChoice);
+			return (choice);
+		}
+		catch (Exception err) {
+			System.out.println("Invalid choice");
+			return (getNumber());
+		}
+	}
+
+
 	public void	selectPlayer(List<PlayerModel> players) {
 		boolean validInput;
 		int		choice;
@@ -158,7 +175,8 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			}
 			System.out.println("0 (EXIT)");
 			System.out.print("Choice : ");
-			choice = sc.nextInt();
+			//choice = sc.nextInt();
+			choice = this.getNumber();
 			validInput = (choice >= 0 && choice <= maxNum);
 			if (!validInput)
 				System.out.println("Invalid option, please try again");

@@ -29,6 +29,7 @@ public class ArenaController {
 	private char					arenaArea[][];
 	private ArenaView				arenaView;
 	private PlayerController		fightController;
+	private int						currentLevel;
 
 	public ArenaController(PlayerController controller, Display pDisplay) {
 		hero = controller;
@@ -54,6 +55,7 @@ public class ArenaController {
 
 	public void				registerHero(PlayerController hero) {
 		this.hero = hero;
+		currentLevel = this.hero.getPlayer().getLevel();
 	}
 
 	public void				initPlay() {
@@ -68,7 +70,7 @@ public class ArenaController {
 		this.playerModel.setY(sizeMap / 2);
 		this.createEnemies();
 		this.setArena();
-		this.arenaView.showMap(this.arenaArea, this);
+		this.arenaView.showMap(this.arenaArea, this, this.playerModel);
 	}
 
 	private void			setArena() {
@@ -126,19 +128,19 @@ public class ArenaController {
 		tempPlayer.setHitPoints(100);
 		switch (tempPlayer.getPClass()) {
 			case "Knight":
-				tempPlayer.setExperience(150);
-				tempPlayer.setAttack(10);
-				tempPlayer.setDefence(7);
+				tempPlayer.setExperience(250);
+				tempPlayer.setAttack(15);
+				tempPlayer.setDefence(10);
 				break ;
 			case "Elf":
-				tempPlayer.setExperience(100);
-				tempPlayer.setAttack(3);
-				tempPlayer.setDefence(3);
+				tempPlayer.setExperience(150);
+				tempPlayer.setAttack(5);
+				tempPlayer.setDefence(5);
 				break ;
 			case "Viking":
-				tempPlayer.setExperience(200);
-				tempPlayer.setAttack(15);
-				tempPlayer.setDefence(15);
+				tempPlayer.setExperience(300);
+				tempPlayer.setAttack(25);
+				tempPlayer.setDefence(25);
 				break ;
 		}
 	}
@@ -233,6 +235,11 @@ public class ArenaController {
 		}
 		if (this.playerModel.getHitPoints() > 0) {
 			this.arenaView.showMessage(this.playerModel.getName() + " won the fight ");
+			if (currentLevel != this.playerModel.getLevel()) {
+				currentLevel = this.playerModel.getLevel();
+				this.initPlay();
+				return ;
+			}
 			this.setArena();
 			this.arenaView.updateMap(arenaArea);
 			return ;
@@ -251,10 +258,16 @@ public class ArenaController {
 				collision = true;
 				fightEnemy = tempEnemy;
 				break ;
-					}
+			}
 		}
 		if (collision && fightEnemy != null) {
+			//this.arenaView.makeChoice();
 			simulateFight(fightEnemy);
+			return ;
+		}
+		if (this.playerModel.getX() == -1 || this.playerModel.getX() == (this.width) ||
+				this.playerModel.getY() == -1 || this.playerModel.getY() == (this.width)) {
+			this.arenaView.showMessage(this.playerModel.getName() + " WON");
 			return ;
 		}
 		this.setArena();
