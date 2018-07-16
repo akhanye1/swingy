@@ -20,7 +20,7 @@ public class ArenaController {
 	private PlayerController		hero;
 	private PlayerModel				playerModel;
 	private PlayerModel				enemyModel;
-	private List<PlayerModel>	enemies;
+	private List<PlayerModel>		enemies;
 	private static int				collisionCounter;
 	private static int				enemyCount;
 	private Display					display;
@@ -30,6 +30,7 @@ public class ArenaController {
 	private ArenaView				arenaView;
 	private PlayerController		fightController;
 	private int						currentLevel;
+	private int						reverseChoice;
 
 	public ArenaController(PlayerController controller, Display pDisplay) {
 		hero = controller;
@@ -124,7 +125,7 @@ public class ArenaController {
 	private void			setPlayerStats(PlayerModel tempPlayer) {
 		Random rand = new Random();
 
-		tempPlayer.setLevel(rand.nextInt(playerModel.getLevel() + 2));
+		tempPlayer.setLevel(rand.nextInt(playerModel.getLevel() + 2) + 1);
 		tempPlayer.setHitPoints(100);
 		switch (tempPlayer.getPClass()) {
 			case "Knight":
@@ -143,6 +144,9 @@ public class ArenaController {
 				tempPlayer.setDefence(25);
 				break ;
 		}
+		tempPlayer.setExperience(tempPlayer.getExperience() * tempPlayer.getLevel());
+		tempPlayer.setAttack(tempPlayer.getAttack() * tempPlayer.getLevel());
+		tempPlayer.setDefence(tempPlayer.getDefence() * (tempPlayer.getLevel() / 2));
 	}
 
 	private void			positionPlayerRandomly(PlayerModel tempEnemy) {
@@ -187,15 +191,19 @@ public class ArenaController {
 		switch (choice) {
 			case 1:
 				this.playerModel.setY(this.playerModel.getY() - 1);
+				reverseChoice = 3;
 				break ;
 			case 2:
 				this.playerModel.setX(this.playerModel.getX() + 1);
+				reverseChoice = 4;
 				break ;
 			case 3:
 				this.playerModel.setY(this.playerModel.getY() + 1);
+				reverseChoice = 1;
 				break ;
 			case 4:
 				this.playerModel.setX(this.playerModel.getX() - 1);
+				reverseChoice = 2;
 				break ;
 			case 10:
 				if (display instanceof PlayerViewConsole) {
@@ -207,11 +215,12 @@ public class ArenaController {
 		}
 	}
 
-	private void		simulateFight(PlayerModel fightEnemy) {
+	public void		simulateFight(PlayerModel fightEnemy) {
 		String 				prepareFight;
 		PlayerModel			player1;
 		PlayerModel 		player2;
 
+		collisionCounter = 0;
 		enemyModel = fightEnemy;
 		prepareFight = this.playerModel.getName() + " vs " +
 			fightEnemy.getName() + "\n";
@@ -261,8 +270,13 @@ public class ArenaController {
 			}
 		}
 		if (collision && fightEnemy != null) {
-			//this.arenaView.makeChoice();
-			simulateFight(fightEnemy);
+			collisionCounter++;
+			if (collisionCounter == 2) {
+				collisionCounter = 0;
+				simulateFight(fightEnemy);
+				return ;
+			}
+			this.arenaView.makeChoice(fightEnemy, this);
 			return ;
 		}
 		if (this.playerModel.getX() == -1 || this.playerModel.getX() == (this.width) ||
@@ -272,5 +286,9 @@ public class ArenaController {
 		}
 		this.setArena();
 		this.arenaView.updateMap(arenaArea);
+	}
+
+	public void		reverseChoice() {
+		this.setSelection(reverseChoice);
 	}
 }

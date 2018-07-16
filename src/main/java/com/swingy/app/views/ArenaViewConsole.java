@@ -98,6 +98,24 @@ public class ArenaViewConsole extends ArenaView implements Display {
 		sc.nextLine();
 	}
 
+	public void	makeChoice(PlayerModel enemy, ArenaController arenaControllerTemp) {
+		int choice;
+
+		do {
+			System.out.print("Do you want to fight " + enemy.getName());
+			System.out.print(" with XP " + enemy.getExperience());
+			System.out.println(" and level " + enemy.getLevel() + " fighter");
+			System.out.println("1 > Fight");
+			System.out.println("2 > Run");
+			choice = this.getNumber();
+		} while (choice < 1 && choice > 2);
+		if (choice == 1) {
+			arenaControllerTemp.simulateFight(enemy);
+			return ;
+		}
+		arenaControllerTemp.reverseChoice();
+	}
+
 	public void refresh() {
 	}
 }
