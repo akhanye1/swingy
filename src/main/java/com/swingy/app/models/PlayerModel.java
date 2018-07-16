@@ -45,7 +45,7 @@ public class PlayerModel {
 	public PlayerModel() {
 	}
 
-	public playerModel(String name, String pClass) {
+	public PlayerModel(String name, String pClass) {
 		this.name = name;
 		this.pClass = pClass;
 	}
@@ -86,4 +86,5 @@ public class PlayerModel {
 	public void				setRec(int rec) { this.rec = rec; }
 	public void				setX(int x) { this.x = x; }
 	public void				setY(int y) { this.y = y; }
+	public void				setPosition(int y, int x) { this.y = y; this.x = x; }
 }	

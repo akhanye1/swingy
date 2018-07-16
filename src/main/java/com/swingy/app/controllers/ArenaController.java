@@ -6,29 +6,39 @@ package com.swingy.app.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Random;
 import com.swingy.app.views.Display;
 import com.swingy.app.models.PlayerModel;
 import com.swingy.app.views.PlayerViewConsole;
 import com.swingy.app.views.PlayerViewGui;
+import com.swingy.app.views.ArenaView;
+import com.swingy.app.views.ArenaViewConsole;
+
 
 public class ArenaController {
 	private PlayerController		hero;
 	private PlayerModel				playerModel;
-	private List<PlayerController>	enemies;
+	private PlayerModel				enemyModel;
+	private List<PlayerModel>	enemies;
 	private static int				collisionCounter;
 	private static int				enemyCount;
 	private Display					display;
 	private int						width;
 	private int						height;
+	private char					arenaArea[][];
+	private ArenaView				arenaView;
+	private PlayerController		fightController;
 
 	public ArenaController(PlayerController controller, Display pDisplay) {
 		hero = controller;
-		enemies = new ArrayList<PlayerController>();
+		enemies = new ArrayList<PlayerModel>();
 
 		this.playerModel = controller.getPlayer();
 		if (pDisplay instanceof PlayerViewConsole) {
 			System.out.println("Console Arena");
+			display = new ArenaViewConsole();
+			arenaView = (ArenaView)display;
 		}
 		else {
 			System.out.println("Gui Arena");
@@ -51,16 +61,39 @@ public class ArenaController {
 		int level;
 
 		level = (this.hero.getPlayer().getLevel() == 0) ? 1 : this.hero.getPlayer().getLevel();
-		System.out.println("Level given  : " + level);
 		sizeMap = (((level - 1) * 5) + 10)  - (level % 2);
 		this.width = sizeMap;
 		this.height = sizeMap;
-		System.out.println("Started <" + this.hero.getPlayer().getName()+">");
-		System.out.println("Size of map :: " + sizeMap);
 		this.playerModel.setX(sizeMap / 2);
 		this.playerModel.setY(sizeMap / 2);
-		System.out.println("Start position : " + this.playerModel.getX());
 		this.createEnemies();
+		this.setArena();
+		this.arenaView.showMap(this.arenaArea, this);
+	}
+
+	private void			setArena() {
+		int		wholeArea;
+
+		wholeArea = this.width + 2;
+		arenaArea = new char[wholeArea][wholeArea];
+		for (int y = 0; y < wholeArea; y++) {
+			for (int x = 0; x < wholeArea; x++) {
+				arenaArea[y][x] = ' ';
+			}
+		}
+		arenaArea[this.playerModel.getY() + 1][this.playerModel.getX() + 1] = '@';
+		for (PlayerModel tempEnemy : this.enemies) {
+			arenaArea[tempEnemy.getY() + 1][tempEnemy.getX() + 1] = '*';
+		}
+		for (int y = 0; y < wholeArea; y++) {
+			arenaArea[y][0] = '#';
+			arenaArea[y][wholeArea - 1] = '#';
+			if (y == 0 || (y == wholeArea - 1)) {
+				for (int x = 1; x < (wholeArea - 1); x++) {
+					arenaArea[y][x] = '#';
+				}
+			}
+		}
 	}
 
 	private String			getRandomName() {
@@ -73,7 +106,7 @@ public class ArenaController {
 			"Blink",
 			"Walker"
 		};
-		return (name[rand.nextInt(6)]);
+		return (names[rand.nextInt(6)]);
 	}
 
 	private String			getClassName() {
@@ -100,7 +133,7 @@ public class ArenaController {
 			case "Elf":
 				tempPlayer.setExperience(100);
 				tempPlayer.setAttack(3);
-				tempPlayer.setDefenece(3);
+				tempPlayer.setDefence(3);
 				break ;
 			case "Viking":
 				tempPlayer.setExperience(200);
@@ -108,6 +141,26 @@ public class ArenaController {
 				tempPlayer.setDefence(15);
 				break ;
 		}
+	}
+
+	private void			positionPlayerRandomly(PlayerModel tempEnemy) {
+		Random	rand = new Random();
+		boolean	conflict;
+		int		i;
+		int		maxEnemies;
+
+		do {
+			conflict = false;
+			i = -1;
+			maxEnemies = this.enemies.size();
+			tempEnemy.setPosition(rand.nextInt(this.width), rand.nextInt(this.height));
+			conflict = ((tempEnemy.getX() == this.playerModel.getX()) &&
+					(tempEnemy.getY() == this.playerModel.getY()));
+			while (!conflict && ++i <  maxEnemies) {
+				conflict = ((tempEnemy.getX() == this.enemies.get(i).getX()) &&
+						tempEnemy.getY() == this.enemies.get(i).getY());
+			}
+		} while (conflict);
 	}
 
 	private void			createEnemies() {
@@ -118,11 +171,93 @@ public class ArenaController {
 		for (int x = 0; x < numEnemies; x++) {
 			PlayerModel tempEnemy = new PlayerModel(getRandomName(), getClassName());
 			setPlayerStats(tempEnemy);
+			positionPlayerRandomly(tempEnemy);
+			this.registerEnemy(tempEnemy);
 		}
 	}
 
-	public void				registerEnemy(PlayerController enemy) {
+	public void				registerEnemy(PlayerModel enemy) {
 		this.enemies.add(enemy);
 		enemyCount++;
+	}
+
+	public void				setSelection(int choice) {
+		switch (choice) {
+			case 1:
+				this.playerModel.setY(this.playerModel.getY() - 1);
+				break ;
+			case 2:
+				this.playerModel.setX(this.playerModel.getX() + 1);
+				break ;
+			case 3:
+				this.playerModel.setY(this.playerModel.getY() + 1);
+				break ;
+			case 4:
+				this.playerModel.setX(this.playerModel.getX() - 1);
+				break ;
+			case 10:
+				if (display instanceof PlayerViewConsole) {
+				}
+				break ;
+		}
+		if (choice != 0) {
+			this.checkPlayer();
+		}
+	}
+
+	private void		simulateFight(PlayerModel fightEnemy) {
+		String 				prepareFight;
+		PlayerModel			player1;
+		PlayerModel 		player2;
+
+		enemyModel = fightEnemy;
+		prepareFight = this.playerModel.getName() + " vs " +
+			fightEnemy.getName() + "\n";
+		prepareFight += "======================================";
+		this.arenaView.prepareFight(prepareFight);
+		fightController = new PlayerController(this.playerModel, fightEnemy, this.arenaView, this);
+		fightController.simulateFight();
+	}
+
+	public void			fightOver() {
+		if (playerModel.getHitPoints() > 0) {
+			fightController.addExperience(this.playerModel, enemyModel);
+		}
+		if (enemyModel.getHitPoints() <= 0) {
+			for (Iterator<PlayerModel> iter = enemies.listIterator(); iter.hasNext();) {
+				PlayerModel tempEnemy = iter.next();
+				if (enemyModel == tempEnemy) {
+					iter.remove();
+				}
+			}
+		}
+		if (this.playerModel.getHitPoints() > 0) {
+			this.arenaView.showMessage(this.playerModel.getName() + " won the fight ");
+			this.setArena();
+			this.arenaView.updateMap(arenaArea);
+			return ;
+		}
+	}
+
+	private void		checkPlayer() {
+		boolean 	collision;
+		PlayerModel	fightEnemy;
+
+		fightEnemy = null;
+		collision = false;
+		for (PlayerModel tempEnemy : this.enemies) {
+			if ((tempEnemy.getX() == this.playerModel.getX()) &&
+					(tempEnemy.getY() == this.playerModel.getY())) {
+				collision = true;
+				fightEnemy = tempEnemy;
+				break ;
+					}
+		}
+		if (collision && fightEnemy != null) {
+			simulateFight(fightEnemy);
+			return ;
+		}
+		this.setArena();
+		this.arenaView.updateMap(arenaArea);
 	}
 }

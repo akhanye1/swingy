@@ -4,6 +4,7 @@
 
 package com.swingy.app.controllers;
 
+import com.swingy.app.views.ArenaView;
 import com.swingy.app.models.PlayerModel;
 import com.swingy.app.models.ValidationErrorModel;
 import com.swingy.app.views.PlayerView;
@@ -20,9 +21,13 @@ import org.hibernate.validator.*;
 import org.hibernate.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayerController {
 	private PlayerModel 		player;
+	private PlayerModel			p1;
+	private PlayerModel			p2;
+	private ArenaView			arenaView;
 	private FileController 		fileController;
 	private PlayerView 			playerView;
 	private final Validator 	validator;
@@ -37,13 +42,103 @@ public class PlayerController {
 		validator = validatorFactory.getValidator();
 	}
 
-	public void	takeHit() { 
+	public PlayerController(PlayerModel player1, PlayerModel player2,
+			ArenaView arenaView, ArenaController arenaController) {
+		Random rand = new Random();
+
+		if (rand.nextInt(2) == 0) {
+			p1 = player1;
+			p2 = player2;
+		}
+		else {
+			p1 = player2;
+			p2 = player1;
+		}
+		this.arenaView = arenaView;
+		this.mainDisplay = null;
+		validator = null;
+		controller = arenaController;
+	}
+
+	public void	simulateFight() {
+		int playerNumber;
+		int attackValue;
+
+		playerNumber = 1;
+		attackValue = 0;
+		do {
+			if (playerNumber == 1) {
+				attackValue = attack(p1);
+				takeHit(p2, attackValue);
+				playerNumber = 2;
+			}
+			else {
+				attackValue = attack(p2);
+				takeHit(p1, attackValue);
+				playerNumber = 1;
+			}
+		} while (p1.getHitPoints() != 0 && p2.getHitPoints() != 0);
+		controller.fightOver();
+	}
+
+	private int attack(PlayerModel tempPlayer) {
+		int		attackValue;
+		String	attackMessage;
+
+		attackValue = tempPlayer.getAttack();
+		attackMessage = tempPlayer.getName() + " attacks with " + tempPlayer.getAttack() + " points";
+		this.arenaView.updateFight(attackMessage);
+		return (attackValue);
+	}
+
+	public void	addExperience(PlayerModel playerWon, PlayerModel enemyDefeated) {
+		int totalExperience;
+		int totalAttack;
+		int totalDefence;
+
+		totalExperience = enemyDefeated.getExperience() * 2;
+		totalAttack = enemyDefeated.getAttack();
+		totalDefence = enemyDefeated.getDefence();
+		playerWon.setExperience(playerWon.getExperience() + totalExperience);
+		playerWon.setAttack(playerWon.getAttack() + totalAttack);
+		playerWon.setDefence(playerWon.getDefence() + totalDefence);
+	}
+
+	public void	takeHit(PlayerModel tempPlayer, int attackValue) {
+		int		hPoint;
+		int		defence;
+		String	defenceMessage;
+
+		hPoint = tempPlayer.getHitPoints();
+		defence = tempPlayer.getDefence();
+		defenceMessage = tempPlayer.getName() + " ";
+		if (defence > 0) {
+			defenceMessage += "deflects some of the hit by " + defence;
+			attackValue -= defence;
+		}
+		if (attackValue < 0) {
+			defenceMessage += " is not hurt by the attack";
+			this.arenaView.updateFight(defenceMessage);
+			return ;
+		}
+		hPoint -= attackValue;
+		if (hPoint <= 0) {
+			defenceMessage += " <<" + tempPlayer.getName() + " is DEAD>>";
+			tempPlayer.setHitPoints(0);
+			this.arenaView.updateFight(defenceMessage);
+			return ;
+		}
+		defenceMessage += " takes " + attackValue + " hit";
+		this.arenaView.updateFight(defenceMessage);
+		tempPlayer.setHitPoints( tempPlayer.getHitPoints() - attackValue);
 	}
 
 	public void movePlayer() {
+
 	}
 
 	public void setDirection() {
+
 	}
 
 	public void selectArtifact() {
