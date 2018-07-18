@@ -19,6 +19,9 @@ public class ArenaViewGui extends ArenaView implements Display {
 	private JPanel			playerPanel;
 	private JPanel			playPanel;
 	private JPanel			mainPanel;
+	private JPanel			btnPanel;
+	private JPanel			btnHolder;
+	private PlayerModel		fightEnemy;
 
 	private JLabel	getHeading(String str) {
 		JLabel	lblHeading;
@@ -78,19 +81,37 @@ public class ArenaViewGui extends ArenaView implements Display {
 		return (tempBtn);
 	}
 
+	private	JPanel	setMoveBtn() {
+		JPanel	btnTempPanel;
+
+		btnTempPanel = new JPanel();
+		btnTempPanel.setLayout(new BorderLayout());
+		btnTempPanel.setPreferredSize(new Dimension(200, 150));
+		btnTempPanel.add(btnGiven("NORTH"), BorderLayout.NORTH);
+		btnTempPanel.add(btnGiven("WEST"), BorderLayout.WEST);
+		btnTempPanel.add(btnGiven("EAST"), BorderLayout.EAST);
+		btnTempPanel.add(btnGiven("SOUTH"), BorderLayout.SOUTH);
+		return (btnTempPanel);
+	}
+
+	private JPanel	setChoiceBtn() {
+		JPanel	btnTempPanel;
+
+		btnTempPanel = new JPanel();
+		btnTempPanel.setLayout(new BorderLayout());
+		btnTempPanel.setPreferredSize(new Dimension(200, 150));
+		btnTempPanel.add(btnGiven("FIGHT"), BorderLayout.NORTH);
+		btnTempPanel.add(btnGiven("RUN"), BorderLayout.SOUTH);
+		return (btnTempPanel);
+	}
+
 	private JPanel	movePanel() {
-		JPanel	btnPanel;
 		JPanel	flowPanel;
 
 		flowPanel = new JPanel(new BorderLayout());
-		btnPanel = new JPanel();
-		btnPanel.setLayout(new BorderLayout());
-		btnPanel.setPreferredSize(new Dimension(200, 150));
-		btnPanel.add(btnGiven("NORTH"), BorderLayout.NORTH);
-		btnPanel.add(btnGiven("WEST"), BorderLayout.WEST);
-		btnPanel.add(btnGiven("EAST"), BorderLayout.EAST);
-		btnPanel.add(btnGiven("SOUTH"), BorderLayout.SOUTH);
+		btnPanel = setMoveBtn();
 		flowPanel.add(btnPanel, BorderLayout.NORTH);
+		btnHolder = flowPanel;
 		return (flowPanel);
 	}
 
@@ -110,6 +131,12 @@ public class ArenaViewGui extends ArenaView implements Display {
 				case "SOUTH":
 					arenaController.setSelection(3);
 					break ;
+				case "FIGHT":
+					arenaController.simulateFight(fightEnemy);
+					break ;
+				case "RUN":
+					arenaController.reverseChoice();
+					break ;
 			}
 		}
 	}
@@ -119,6 +146,7 @@ public class ArenaViewGui extends ArenaView implements Display {
 
 		mapTxt = new JTextArea(stringMap());
 		mapTxt.setFont(new Font("monospaced", Font.PLAIN, 12));
+		mapTxt.setEditable(false);
 		this.mainPanel.add(playerInfo(), BorderLayout.WEST);
 		this.mainPanel.add(movePanel(), BorderLayout.EAST);
 		this.mainPanel.add(mapTxt, BorderLayout.CENTER);	
@@ -169,7 +197,15 @@ public class ArenaViewGui extends ArenaView implements Display {
 	}
 
 	public void	makeChoice(PlayerModel enemy, ArenaController arenaController) {
-
+		this.arenaController = arenaController;
+		this.fightEnemy = enemy;
+		btnHolder.removeAll();
+		btnPanel = setChoiceBtn();
+		btnHolder.add(btnPanel, BorderLayout.NORTH);
+		btnHolder.revalidate();
+		btnHolder.repaint();
+		this.mainPanel.revalidate();
+		this.mainPanel.repaint();
 	}
 
 	public void refresh() {
