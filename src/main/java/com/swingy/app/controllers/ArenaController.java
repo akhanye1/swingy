@@ -14,6 +14,7 @@ import com.swingy.app.views.PlayerViewConsole;
 import com.swingy.app.views.PlayerViewGui;
 import com.swingy.app.views.ArenaView;
 import com.swingy.app.views.ArenaViewConsole;
+import com.swingy.app.views.ArenaViewGui;
 
 
 public class ArenaController {
@@ -44,6 +45,8 @@ public class ArenaController {
 		}
 		else {
 			System.out.println("Gui Arena");
+			display = new ArenaViewGui();
+			arenaView = (ArenaView)display;
 		}
 		enemyCount = 0;
 	}
