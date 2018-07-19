@@ -118,7 +118,6 @@ public class ArenaViewGui extends ArenaView implements Display {
 
 	private class btnPressed implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("btn pressed");
 			switch (e.getActionCommand()) {
 				case "NORTH":
 					arenaController.setSelection(1);
@@ -204,14 +203,10 @@ public class ArenaViewGui extends ArenaView implements Display {
 		this.txtArea.update(this.txtArea.getGraphics());
 	}
 
-	public void	showMessage(String message, boolean won) {
-		if (won) {
-			JOptionPane.showMessageDialog(this.frame, message, "Information",
+	public void	showMessage(String message, boolean exitProgram) {
+		JOptionPane.showMessageDialog(this.frame, message, "Information",
 				JOptionPane.INFORMATION_MESSAGE);
-		}
-		else {
-			JOptionPane.showMessageDialog(this.frame, message, "Information",
-				JOptionPane.ERROR_MESSAGE);
+		if (exitProgram) {
 			this.frame.setVisible(false);
 			this.frame.dispose();
 		}

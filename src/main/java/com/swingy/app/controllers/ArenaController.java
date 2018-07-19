@@ -246,7 +246,7 @@ public class ArenaController {
 			}
 		}
 		if (this.playerModel.getHitPoints() > 0) {
-			this.arenaView.showMessage(this.playerModel.getName() + " won the fight ", true);
+			this.arenaView.showMessage(this.playerModel.getName() + " won the fight ", false);
 			if (currentLevel != this.playerModel.getLevel()) {
 				currentLevel = this.playerModel.getLevel();
 				this.initPlay();
@@ -256,7 +256,7 @@ public class ArenaController {
 			this.arenaView.updateMap(arenaArea);
 			return ;
 		}
-		this.arenaView.showMessage(this.playerModel.getName() + " lost fight", false);
+		this.arenaView.showMessage(this.playerModel.getName() + " lost fight", true);
 	}
 
 	private void		checkPlayer() {
