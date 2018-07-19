@@ -91,7 +91,7 @@ public class ArenaViewConsole extends ArenaView implements Display {
 		System.out.println(attackMessage);
 	}
 
-	public void showMessage(String message) {
+	public void showMessage(String message, boolean won) {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println(message);

@@ -2,21 +2,6 @@
  * Author Katleho Khanye (akhanye)
  * */
 
-<<<<<<< HEAD
-package com.siwngy.app.views;
-
-import com.swingy.app.controllers.ArenaController;
-import com.swingy.app.models.PlayerModel;
-
-public class ArenaViewGui extends ArenaView implements Display {
-	public void	showMap(char[][] map, ArenaController arenaController, PlayerModel playerModel) {
-	}
-
-	public void	updateMap(char[][] map) {
-	}
-
-	public void prepareFight(String prepareString) {
-=======
 package com.swingy.app.views;
 
 import	com.swingy.app.controllers.ArenaController;
@@ -37,6 +22,7 @@ public class ArenaViewGui extends ArenaView implements Display {
 	private JPanel			btnPanel;
 	private JPanel			btnHolder;
 	private PlayerModel		fightEnemy;
+	private JTextArea		txtArea;
 
 	private JLabel	getHeading(String str) {
 		JLabel	lblHeading;
@@ -157,14 +143,12 @@ public class ArenaViewGui extends ArenaView implements Display {
 	}
 
 	private void	viewMap() {
-		JTextArea	mapTxt;
-
-		mapTxt = new JTextArea(stringMap());
-		mapTxt.setFont(new Font("monospaced", Font.PLAIN, 12));
-		mapTxt.setEditable(false);
+		this.txtArea = new JTextArea(stringMap());
+		this.txtArea.setFont(new Font("monospaced", Font.PLAIN, 12));
+		this.txtArea.setEditable(false);
 		this.mainPanel.add(playerInfo(), BorderLayout.WEST);
 		this.mainPanel.add(movePanel(), BorderLayout.EAST);
-		this.mainPanel.add(mapTxt, BorderLayout.CENTER);	
+		this.mainPanel.add(this.txtArea, BorderLayout.CENTER);	
 	}
 
 	private void	init() {
@@ -199,22 +183,39 @@ public class ArenaViewGui extends ArenaView implements Display {
 		/*this.viewMap();
 		this.frame.revalidate();
 		this.frame.repaint();*/
-		System.out.println("Updating map");
 	}
 
 	public void	prepareFight(String prepareString) {
->>>>>>> 7f9b013153db52d5907bc5289331768e57d63a83
+		this.btnHolder.removeAll();
+		this.txtArea.setText(prepareString);
+		this.txtArea.update(this.txtArea.getGraphics());
+		this.btnHolder.revalidate();
+		this.btnHolder.repaint();
+		this.mainPanel.revalidate();
+		this.mainPanel.repaint();
 	}
 
 	public void	updateFight(String updateString) {
+		String currentString;
+
+		currentString = this.txtArea.getText() + "\n";
+		currentString += updateString;
+		this.txtArea.setText(currentString);
+		this.txtArea.update(this.txtArea.getGraphics());
 	}
 
-	public void	showMessage(String message) {
+	public void	showMessage(String message, boolean won) {
+		if (won) {
+			JOptionPane.showMessageDialog(this.frame, message, "Information",
+				JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			JOptionPane.showMessageDialog(this.frame, message, "Information",
+				JOptionPane.ERROR_MESSAGE);
+			this.frame.setVisible(false);
+			this.frame.dispose();
+		}
 	}
-<<<<<<< HEAD
-
-	public void	makeChoice(PlayerModel enemy, ArenaController arenaController) {
-=======
 
 	public void	makeChoice(PlayerModel enemy, ArenaController arenaController) {
 		this.arenaController = arenaController;
@@ -229,6 +230,5 @@ public class ArenaViewGui extends ArenaView implements Display {
 	}
 
 	public void refresh() {
->>>>>>> 7f9b013153db52d5907bc5289331768e57d63a83
 	}
 }

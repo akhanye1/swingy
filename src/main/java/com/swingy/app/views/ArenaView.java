@@ -12,6 +12,6 @@ public abstract class ArenaView {
 	public abstract void updateMap(char[][] map);
 	public abstract void prepareFight(String prepareString);
 	public abstract void updateFight(String updateString);
-	public abstract void showMessage(String message);
+	public abstract void showMessage(String message, boolean won);
 	public abstract void makeChoice(PlayerModel enemy, ArenaController arenaController);
 }
