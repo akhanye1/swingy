@@ -39,12 +39,10 @@ public class ArenaController {
 
 		this.playerModel = controller.getPlayer();
 		if (pDisplay instanceof PlayerViewConsole) {
-			System.out.println("Console Arena");
 			display = new ArenaViewConsole();
 			arenaView = (ArenaView)display;
 		}
 		else {
-			System.out.println("Gui Arena");
 			display = new ArenaViewGui();
 			arenaView = (ArenaView)display;
 		}
@@ -75,6 +73,20 @@ public class ArenaController {
 		this.createEnemies();
 		this.setArena();
 		this.arenaView.showMap(this.arenaArea, this, this.playerModel);
+	}
+
+	private void			updatePlay() {
+		int sizeMap;
+		int level;
+
+		level = (this.hero.getPlayer().getLevel() == 0) ? 1 : this.hero.getPlayer().getLevel();
+		sizeMap = (((level - 1) * 5) + 10)  - (level % 2);
+		this.width = sizeMap;
+		this.height = sizeMap;
+		this.playerModel.setX(sizeMap / 2);
+		this.playerModel.setY(sizeMap / 2);
+		this.createEnemies();
+		this.setArena();
 	}
 
 	private void			setArena() {
@@ -209,7 +221,15 @@ public class ArenaController {
 				reverseChoice = 2;
 				break ;
 			case 10:
-				if (display instanceof PlayerViewConsole) {
+				if (display instanceof ArenaViewConsole) {
+					this.display = new ArenaViewGui();
+					this.arenaView = (ArenaView)display;
+					this.arenaView.showMap(arenaArea, this, this.playerModel);
+				}
+				else if (display instanceof ArenaViewGui) {
+					this.display = new ArenaViewConsole();
+					this.arenaView = (ArenaView)display;
+					this.arenaView.showMap(arenaArea, this, this.playerModel);
 				}
 				break ;
 		}
@@ -249,7 +269,8 @@ public class ArenaController {
 			this.arenaView.showMessage(this.playerModel.getName() + " won the fight ", false);
 			if (currentLevel != this.playerModel.getLevel()) {
 				currentLevel = this.playerModel.getLevel();
-				this.initPlay();
+				this.updatePlay();
+				this.arenaView.updateMap(arenaArea);
 				return ;
 			}
 			this.setArena();

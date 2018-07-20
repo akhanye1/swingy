@@ -91,11 +91,14 @@ public class ArenaViewConsole extends ArenaView implements Display {
 		System.out.println(attackMessage);
 	}
 
-	public void showMessage(String message, boolean won) {
+	public void showMessage(String message, boolean exitProgram) {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println(message);
 		sc.nextLine();
+		if (exitProgram) {
+			System.exit(0);
+		}
 	}
 
 	public void	makeChoice(PlayerModel enemy, ArenaController arenaControllerTemp) {

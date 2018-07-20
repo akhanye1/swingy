@@ -175,7 +175,6 @@ public class PlayerViewConsole extends PlayerView implements Display {
 			}
 			System.out.println("0 (EXIT)");
 			System.out.print("Choice : ");
-			//choice = sc.nextInt();
 			choice = this.getNumber();
 			validInput = (choice >= 0 && choice <= maxNum);
 			if (!validInput)

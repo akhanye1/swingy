@@ -9,16 +9,9 @@ import com.swingy.app.models.PlayerModel;
 import com.swingy.app.models.ValidationErrorModel;
 import com.swingy.app.views.PlayerView;
 import com.swingy.app.views.Display;
-import com.swingy.app.controllers.FileController;
 import com.swingy.app.views.PlayerViewConsole;
-import javax.validation.*;
-import javax.validation.constraints.*;
-import javax.validation.executable.*;
-import java.util.Set;
 import java.lang.reflect.Method;
 import javax.*;
-import org.hibernate.validator.*;
-import org.hibernate.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,7 +24,6 @@ public class PlayerController {
 	private ArenaView			arenaView;
 	private FileController 		fileController;
 	private PlayerView 			playerView;
-	private final Validator 	validator;
 	private ArenaController		controller;
 	private Display				mainDisplay;
 
@@ -39,8 +31,6 @@ public class PlayerController {
 		fileController = new FileController();
 		playerView = (PlayerView)display;
 		this.mainDisplay = display;
-		final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-		validator = validatorFactory.getValidator();
 	}
 
 	public PlayerController(PlayerModel player1, PlayerModel player2,
@@ -58,7 +48,6 @@ public class PlayerController {
 		}
 		this.arenaView = arenaView;
 		this.mainDisplay = null;
-		validator = null;
 		controller = arenaController;
 	}
 
@@ -165,21 +154,6 @@ public class PlayerController {
 	public void	updatePlayer() {
 	}
 
-	private boolean runValidator(List<ValidationErrorModel> errors) {
-		boolean ok;
-
-		ok = true;
-		Set<ConstraintViolation<PlayerModel>> validationErrors = validator.validate(player);
-		if (!validationErrors.isEmpty()) {
-			ok = false;
-			for (ConstraintViolation<PlayerModel> error : validationErrors) {
-				ValidationErrorModel tempModel = new ValidationErrorModel(error.getPropertyPath().toString(), error.getMessage());
-				errors.add(tempModel);
-			}
-		}
-		return (ok);
-	}
-
 	public boolean validatePlayer(List<ValidationErrorModel> errors) {
 		this.player.setLevel(1);
 		this.player.setHitPoints(100);
@@ -200,7 +174,7 @@ public class PlayerController {
 				this.player.setDefence(25);
 				break ;
 		}
-		return (this.runValidator(errors));
+		return (ValidateController.runValidator(errors, player));
 	}
 
 	public void newPlayer() {

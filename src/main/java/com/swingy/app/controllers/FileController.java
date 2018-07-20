@@ -5,6 +5,7 @@
 package com.swingy.app.controllers;
 
 import com.swingy.app.models.PlayerModel;
+import com.swingy.app.models.ValidationErrorModel;
 import com.swingy.app.views.Display;
 import java.util.List;
 import java.util.ArrayList;
@@ -31,15 +32,6 @@ public class FileController {
 			")";
 		return (initString);
 	}
-
-	/*public String createArtifactsTable() {
-		String initString;
-
-		initString = "CREATE TABLE IF NOT EXISTS artifacts " +
-			"(rec INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			"" +
-			")";
-	}*/
 
 	private Connection	getConnection() {
 		try {
@@ -92,13 +84,16 @@ public class FileController {
 	}
 
 	public List<PlayerModel> getHeros() {
-		Connection 			conn;
-		List<PlayerModel>	players;
+		Connection 					conn;
+		List<PlayerModel>			players;
+		List<ValidationErrorModel> 	errors;
+
 		try {
 			conn = this.getConnection();
 			statement = conn.createStatement();
 			ResultSet	rs = statement.executeQuery(getString());
 			players = new ArrayList<PlayerModel>();
+			errors = new ArrayList<ValidationErrorModel>();
 			while (rs.next()) {
 				PlayerModel tempModel = new PlayerModel();
 				tempModel.setRec(rs.getInt("rec"));
@@ -109,7 +104,9 @@ public class FileController {
 				tempModel.setAttack(rs.getInt("attack"));
 				tempModel.setDefence(rs.getInt("defence"));
 				tempModel.setHitPoints(rs.getInt("hitPoints"));
-				players.add(tempModel);
+				if (ValidateController.runValidator(errors, tempModel)) {
+					players.add(tempModel);
+				}
 			}
 		}
 		catch (SQLException err) {
@@ -182,8 +179,4 @@ public class FileController {
 		}
 		return (true);
 	}
-
-	/*public boolean updateHero(PlayerModel hero) {
-		return (true);
-	}*/
 }

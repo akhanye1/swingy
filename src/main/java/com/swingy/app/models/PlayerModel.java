@@ -4,7 +4,6 @@
 
 package com.swingy.app.models;
 
-import com.swingy.app.artifacts.Artifacts;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.validator.constraints.*;
@@ -23,22 +22,16 @@ public class PlayerModel {
 	private int				level;
 	@Digits(integer=5, fraction=0, message="The value of experience cannot be more than 5 digits")
 	@Min(value=0, message="Min value of experience cannot be less than 0")
-	@Max(value=100000, message="Max value of experience cannot be more than 10000")
 	private int				experience;
 	@Digits(integer=3, fraction=0, message="The value of attack cannot be more than 3 digits")
 	@Min(value=0, message="Min value of attack cannot be less than 0")
-	@Max(value=100, message="Max value attack cannot be more than 100")
 	private int				attack;
 	@Digits(integer=3, fraction=0, message="The value of defence cannot be more than 3 digits")
 	@Min(value=0, message="Min value of defence cannot be less than 0")
-	@Max(value=100, message="Max value defence cannot be more than 100")
 	private int				defence;
 	@Digits(integer=3, fraction=0, message="The value of hitpoints cannot be more than 3 digits")
 	@Min(value=0, message="Min value of hitpoints cannot be less than 0")
-	@Max(value=100, message="Max value hitpoints cannot be more than 100")
 	private int				hitPoints;
-	private List<Artifacts>	artifacts;
-	private Artifacts		currentArtifact;
 	private int				y;
 	private int				x;
 
@@ -59,8 +52,6 @@ public class PlayerModel {
 		this.attack = Attack;
 		this.defence = defence;
 		this.hitPoints = hitPoints;
-		artifacts = new ArrayList<Artifacts>();
-		this.currentArtifact = null;
 		this.y = 0;
 		this.x = 0;
 	}
@@ -75,7 +66,6 @@ public class PlayerModel {
 	public int				getHitPoints() { return (this.hitPoints); }
 	public int				getX() { return (this.x); }
 	public int				getY() { return (this.y); }
-	public void				addArtifact(Artifacts artifact) { this.artifacts.add(artifact); }
 	public void				setName(String name) { this.name = name; }
 	public void				setPClass(String pClass) { this.pClass = pClass; }
 	public void				setLevel(int level) { this.level = level; }

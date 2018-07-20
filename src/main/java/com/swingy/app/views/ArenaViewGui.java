@@ -30,7 +30,6 @@ public class ArenaViewGui extends ArenaView implements Display {
 		lblHeading = new JLabel(str);
 		lblHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblHeading.setPreferredSize(new Dimension(200, 50));
-		//lblHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
 		return (lblHeading);
 	}
 
@@ -112,6 +111,7 @@ public class ArenaViewGui extends ArenaView implements Display {
 		flowPanel = new JPanel(new BorderLayout());
 		btnPanel = setMoveBtn();
 		flowPanel.add(btnPanel, BorderLayout.NORTH);
+		flowPanel.add(btnGiven("Switch to Console"), BorderLayout.SOUTH);
 		btnHolder = flowPanel;
 		return (flowPanel);
 	}
@@ -137,17 +137,25 @@ public class ArenaViewGui extends ArenaView implements Display {
 				case "RUN":
 					arenaController.reverseChoice();
 					break ;
+				case "Switch to Console":
+					frame.setVisible(false);
+					frame.dispose();
+					arenaController.setSelection(10);
+					break ;
 			}
 		}
 	}
 
 	private void	viewMap() {
+		JScrollPane	txtScroll;
+
 		this.txtArea = new JTextArea(stringMap());
 		this.txtArea.setFont(new Font("monospaced", Font.PLAIN, 12));
 		this.txtArea.setEditable(false);
 		this.mainPanel.add(playerInfo(), BorderLayout.WEST);
 		this.mainPanel.add(movePanel(), BorderLayout.EAST);
-		this.mainPanel.add(this.txtArea, BorderLayout.CENTER);	
+		txtScroll = new JScrollPane(this.txtArea);
+		this.mainPanel.add(txtScroll, BorderLayout.CENTER);	
 	}
 
 	private void	init() {
@@ -179,9 +187,6 @@ public class ArenaViewGui extends ArenaView implements Display {
 		this.viewMap();
 		this.mainPanel.revalidate();
 		this.mainPanel.repaint();
-		/*this.viewMap();
-		this.frame.revalidate();
-		this.frame.repaint();*/
 	}
 
 	public void	prepareFight(String prepareString) {
@@ -212,9 +217,22 @@ public class ArenaViewGui extends ArenaView implements Display {
 		}
 	}
 
+	private String	getEnemyStats() {
+		String enm;
+
+		enm = "Do you want to fight " + this.fightEnemy.getName() + "\n"+
+			"Experience : " + this.fightEnemy.getExperience() + "\n" +
+			"Level : " + this.fightEnemy.getLevel() + "\n" +
+			"Attack : " + this.fightEnemy.getAttack() + "\n" +
+			"Defence : " + this.fightEnemy.getDefence();
+		return (enm);
+	}
+
 	public void	makeChoice(PlayerModel enemy, ArenaController arenaController) {
 		this.arenaController = arenaController;
 		this.fightEnemy = enemy;
+		this.txtArea.setText(getEnemyStats());
+		this.txtArea.update(this.txtArea.getGraphics());
 		btnHolder.removeAll();
 		btnPanel = setChoiceBtn();
 		btnHolder.add(btnPanel, BorderLayout.NORTH);
@@ -225,5 +243,6 @@ public class ArenaViewGui extends ArenaView implements Display {
 	}
 
 	public void refresh() {
+
 	}
 }
